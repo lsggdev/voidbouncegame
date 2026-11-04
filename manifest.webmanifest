@@ -1,10 +1,15 @@
 {
- "name": "Void Bounce",
+ "name": "Void Bounce \u2013 Neon Tunnel Game",
  "short_name": "Void Bounce",
  "start_url": "/",
  "display": "standalone",
+ "description": "Free one-button neon tunnel arcade game with 850 levels.",
  "background_color": "#160733",
  "theme_color": "#160733",
+ "categories": [
+  "games",
+  "entertainment"
+ ],
  "icons": [
   {
    "src": "/img/icon-192.png",
