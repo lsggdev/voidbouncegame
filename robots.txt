@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /play/obrigado.html
+
+Sitemap: https://voidbouncegame.com/sitemap.xml

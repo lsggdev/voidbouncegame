@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Void Bounce</title>
+<style>
+ html,body{margin:0;height:100%;background:#080512;color:#eae6ff;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+ main{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;box-sizing:border-box}
+ h1{font-size:28px;margin:0 0 12px;color:#7de8fa}
+ p{max-width:420px;line-height:1.5;opacity:.85;margin:0 0 10px}
+ small{opacity:.5}
+</style>
+</head>
+<body>
+<main>
+ <h1 id="t">Payment complete!</h1>
+ <p id="m">Your item is being delivered to the game. This window will close by itself.</p>
+ <small id="s"></small>
+</main>
+<script>
+(function(){
+ var pt = /^pt/i.test(navigator.language || '');
+ var q = new URLSearchParams(location.search);
+ var id = q.get('p') || '';
+ var sessao = q.get('session_id') || '';
+ var msg = {vb: 'compra', id: id, sessao: sessao};
+ var ok = false;
+ if (id && sessao.indexOf('cs_') === 0) {
+  try { if (window.opener && !window.opener.closed) { window.opener.postMessage(msg, location.origin); ok = true; } } catch (e) {}
+  try {
+   var l = JSON.parse(localStorage.getItem('vb_pendentes') || '[]');
+   l.push({id: id, sessao: sessao});
+   localStorage.setItem('vb_pendentes', JSON.stringify(l));
+  } catch (e) {}
+ }
+ var t = document.getElementById('t'), m = document.getElementById('m'), s = document.getElementById('s');
+ if (pt) { t.textContent = 'Pagamento concluído!'; m.textContent = 'Seu item está sendo entregue no jogo. Esta janela fecha sozinha.'; }
+ if (!ok) {
+  m.textContent = pt
+   ? 'Pagamento recebido. Volte para a aba do jogo. Se o item não aparecer, responda o e-mail de recibo do Stripe com este código:'
+   : 'Payment received. Go back to the game tab. If the item does not show up, reply to your Stripe receipt email with this code:';
+  s.textContent = sessao.slice(-12);
+ } else {
+  setTimeout(function(){ try { window.close(); } catch (e) {} }, 1800);
+ }
+})();
+</script>
+</body>
+</html>
