@@ -114,7 +114,18 @@
     });
   }
 
+  /* Language menu: close when clicking outside or pressing Escape. */
+  function setupLangs() {
+    var d = document.querySelector("details.langs");
+    if (!d) return;
+    document.addEventListener("click", function (e) { if (d.open && !d.contains(e.target)) d.open = false; });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && d.open) { d.open = false; d.querySelector("summary").focus(); }
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
+    setupLangs();
     setupGame();
     if (document.body.dataset.noAds !== "1") loadAds();
   });
